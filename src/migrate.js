@@ -48,7 +48,42 @@ export default function (argv) {
                         if (!modelsByDS[dsName]) {
                             modelsByDS[dsName] = []
                         }
-                        modelsByDS[dsName].push(modelName)
+                        // Why this ? When providing model name from the commandline, 
+                        // creating the copy of model. resulting in table exists error
+                        // 
+                        /**
+                        * undefined:info Starting development datasource's migration with migrate method +0ms
+                             undefined:info Models to migrate ["deposit","deposit"] +0ms
+                            { Error: ER_TABLE_EXISTS_ERROR: Table 'deposit' already exists
+                              at Query.Sequence._packetToError (/Users/saranshsharma/Documents/wallet/node_modules/mysql/lib/protocol/sequences/Sequence.js:52:14)
+                                at Query.ErrorPacket (/Users/saranshsharma/Documents/wallet/node_modules/mysql/lib/protocol/sequences/Query.js:77:18)
+                                at Protocol._parsePacket (/Users/saranshsharma/Documents/wallet/node_modules/mysql/lib/protocol/Protocol.js:279:23)
+                                at Parser.write (/Users/saranshsharma/Documents/wallet/node_modules/mysql/lib/protocol/Parser.js:76:12)
+                                at Protocol.write (/Users/saranshsharma/Documents/wallet/node_modules/mysql/lib/protocol/Protocol.js:39:16)
+                                at Socket.<anonymous> (/Users/saranshsharma/Documents/wallet/node_modules/mysql/lib/Connection.js:103:28)
+                                at Socket.emit (events.js:159:13)
+                                at addChunk (_stream_readable.js:265:12)
+                                at readableAddChunk (_stream_readable.js:252:11)
+                                at Socket.Readable.push (_stream_readable.js:209:10)
+                                at TCP.onread (net.js:608:20)
+                                --------------------
+
+                        *
+                        *
+                        *
+                        *
+                        *
+                        **/
+                        
+                      
+                   
+                        if (modelsByDS[dsName] == modelName){
+                            modelsByDS[dsName].splice(modelName,0)
+                        }else {
+                        
+                            modelsByDS[dsName].push(modelName)
+                        }
+                        
                     }
                 }
             })
